@@ -1,24 +1,57 @@
 (() => {
   const body = document.body;
 
-  // Homepage hero spacing override. The original full-viewport hero created
-  // excessive empty space beneath the navigation on wide desktop screens.
+  // Homepage hero layout overrides for GitHub Pages preview and production.
+  // Keeps the three-line headline inside its column and prevents overlap with
+  // the established-1998 panel on desktop widths.
   const hero = document.querySelector('.hero');
   if (hero) {
-    const heroSpacingFix = document.createElement('style');
-    heroSpacingFix.textContent = `
+    const heroLayoutFix = document.createElement('style');
+    heroLayoutFix.textContent = `
       .hero {
         min-height: auto;
         padding-top: clamp(58px, 6vw, 88px);
         padding-bottom: clamp(64px, 7vw, 104px);
       }
       .hero-grid {
+        grid-template-columns: minmax(0, 1.5fr) minmax(320px, .72fr);
+        gap: clamp(42px, 5vw, 76px);
         align-items: center;
+      }
+      .hero-copy {
+        min-width: 0;
+        max-width: none;
+      }
+      .hero-copy h1 {
+        max-width: 100%;
+        font-size: clamp(3.45rem, 6.2vw, 6.65rem);
+        line-height: .99;
+        overflow-wrap: normal;
+        word-break: normal;
+      }
+      .hero-panel {
+        position: relative;
+        z-index: 2;
+      }
+      @media (max-width: 1180px) {
+        .hero-grid {
+          grid-template-columns: minmax(0, 1.35fr) minmax(300px, .75fr);
+          gap: 38px;
+        }
+        .hero-copy h1 {
+          font-size: clamp(3.3rem, 5.9vw, 5.7rem);
+        }
       }
       @media (max-width: 980px) {
         .hero {
           padding-top: 58px;
           padding-bottom: 72px;
+        }
+        .hero-grid {
+          grid-template-columns: 1fr;
+        }
+        .hero-copy h1 {
+          font-size: clamp(3.25rem, 10vw, 5.8rem);
         }
       }
       @media (max-width: 680px) {
@@ -26,9 +59,13 @@
           padding-top: 46px;
           padding-bottom: 58px;
         }
+        .hero-copy h1 {
+          font-size: clamp(2.75rem, 13vw, 4.45rem);
+          line-height: 1.01;
+        }
       }
     `;
-    document.head.appendChild(heroSpacingFix);
+    document.head.appendChild(heroLayoutFix);
   }
 
   const menuButton = document.querySelector('[data-menu-button]');
