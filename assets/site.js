@@ -68,8 +68,9 @@
       }
       .market-card {
         display: flex;
+        min-height: 0;
+        padding: 0;
         flex-direction: column;
-        padding: 0 0 clamp(28px, 3vw, 42px);
         overflow: hidden;
       }
       .market-card > span:first-child {
@@ -79,7 +80,7 @@
         display: grid;
         width: 100%;
         min-height: 220px;
-        margin-bottom: clamp(28px, 3vw, 42px);
+        margin: 0;
         padding: 24px;
         place-items: center;
         color: rgba(255,255,255,.72);
@@ -91,25 +92,34 @@
       }
       .market-card-image strong {
         display: block;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
         color: #8cc6b6;
         font-size: .75rem;
         letter-spacing: .13em;
         text-transform: uppercase;
       }
+      .market-card-image small,
       .market-card-image span {
         max-width: 270px;
-        font-size: .9rem;
-        line-height: 1.45;
+        color: rgba(255,255,255,.62);
+        font-size: .82rem;
+        line-height: 1.4;
       }
-      .market-card h3,
-      .market-card > p {
-        margin-right: clamp(28px, 3vw, 42px);
-        margin-left: clamp(28px, 3vw, 42px);
+      .market-card-copy {
+        padding: 22px clamp(24px, 3vw, 40px) 30px;
+      }
+      .market-card-copy h3 {
+        margin: 0 0 10px;
+      }
+      .market-card-copy p {
+        margin: 0;
       }
       @media (max-width: 680px) {
         .market-card-image {
           min-height: 190px;
+        }
+        .market-card-copy {
+          padding: 18px 22px 24px;
         }
       }
     `;
@@ -123,6 +133,7 @@
   ];
 
   document.querySelectorAll('.market-card').forEach((card, index) => {
+    card.querySelectorAll(':scope > span').forEach((number) => number.remove());
     if (card.querySelector('.market-card-image')) return;
     const image = document.createElement('div');
     image.className = 'market-card-image';
