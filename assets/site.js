@@ -1,5 +1,36 @@
 (() => {
   const body = document.body;
+
+  // Homepage hero spacing override. The original full-viewport hero created
+  // excessive empty space beneath the navigation on wide desktop screens.
+  const hero = document.querySelector('.hero');
+  if (hero) {
+    const heroSpacingFix = document.createElement('style');
+    heroSpacingFix.textContent = `
+      .hero {
+        min-height: auto;
+        padding-top: clamp(58px, 6vw, 88px);
+        padding-bottom: clamp(64px, 7vw, 104px);
+      }
+      .hero-grid {
+        align-items: center;
+      }
+      @media (max-width: 980px) {
+        .hero {
+          padding-top: 58px;
+          padding-bottom: 72px;
+        }
+      }
+      @media (max-width: 680px) {
+        .hero {
+          padding-top: 46px;
+          padding-bottom: 58px;
+        }
+      }
+    `;
+    document.head.appendChild(heroSpacingFix);
+  }
+
   const menuButton = document.querySelector('[data-menu-button]');
   const mobileNav = document.querySelector('[data-mobile-nav]');
   const dropdowns = document.querySelectorAll('.nav-dropdown');
