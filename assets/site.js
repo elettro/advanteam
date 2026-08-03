@@ -2,8 +2,6 @@
   const body = document.body;
 
   // Homepage hero layout overrides for GitHub Pages preview and production.
-  // Keeps the three-line headline inside its column and prevents overlap with
-  // the established-1998 panel on desktop widths.
   const hero = document.querySelector('.hero');
   if (hero) {
     const heroLayoutFix = document.createElement('style');
@@ -64,18 +62,81 @@
           line-height: 1.01;
         }
       }
+
+      .market-grid {
+        align-items: stretch;
+      }
+      .market-card {
+        display: flex;
+        flex-direction: column;
+        padding: 0 0 clamp(28px, 3vw, 42px);
+        overflow: hidden;
+      }
+      .market-card > span:first-child {
+        display: none;
+      }
+      .market-card-image {
+        display: grid;
+        width: 100%;
+        min-height: 220px;
+        margin-bottom: clamp(28px, 3vw, 42px);
+        padding: 24px;
+        place-items: center;
+        color: rgba(255,255,255,.72);
+        background:
+          linear-gradient(135deg, rgba(47,127,104,.24), rgba(255,255,255,.035)),
+          repeating-linear-gradient(45deg, transparent 0 18px, rgba(255,255,255,.045) 18px 19px);
+        border-bottom: 1px dashed rgba(140,198,182,.55);
+        text-align: center;
+      }
+      .market-card-image strong {
+        display: block;
+        margin-bottom: 8px;
+        color: #8cc6b6;
+        font-size: .75rem;
+        letter-spacing: .13em;
+        text-transform: uppercase;
+      }
+      .market-card-image span {
+        max-width: 270px;
+        font-size: .9rem;
+        line-height: 1.45;
+      }
+      .market-card h3,
+      .market-card > p {
+        margin-right: clamp(28px, 3vw, 42px);
+        margin-left: clamp(28px, 3vw, 42px);
+      }
+      @media (max-width: 680px) {
+        .market-card-image {
+          min-height: 190px;
+        }
+      }
     `;
     document.head.appendChild(heroLayoutFix);
   }
+
+  const marketImageRecommendations = [
+    'Modern German or European executive meeting with authentic architecture and natural light.',
+    'German and North American business leaders in a focused cross-border strategy session.',
+    'Contemporary Middle Eastern business setting with diverse senior executives and modern regional architecture.'
+  ];
+
+  document.querySelectorAll('.market-card').forEach((card, index) => {
+    if (card.querySelector('.market-card-image')) return;
+    const image = document.createElement('div');
+    image.className = 'market-card-image';
+    image.setAttribute('aria-label', 'FPO image recommendation');
+    image.innerHTML = `<div><strong>FPO image</strong><span>${marketImageRecommendations[index] || 'Regional market image to be added.'}</span></div>`;
+    card.prepend(image);
+  });
 
   const menuButton = document.querySelector('[data-menu-button]');
   const mobileNav = document.querySelector('[data-mobile-nav]');
   const dropdowns = document.querySelectorAll('.nav-dropdown');
   const year = document.querySelector('[data-year]');
 
-  if (year) {
-    year.textContent = new Date().getFullYear();
-  }
+  if (year) year.textContent = new Date().getFullYear();
 
   const closeMobileMenu = () => {
     if (!menuButton || !mobileNav) return;
@@ -93,25 +154,19 @@
       mobileNav.classList.toggle('is-open', !isOpen);
       body.classList.toggle('menu-open', !isOpen);
     });
-
-    mobileNav.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', closeMobileMenu);
-    });
+    mobileNav.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMobileMenu));
   }
 
   dropdowns.forEach((dropdown) => {
     const button = dropdown.querySelector('button');
     if (!button) return;
-
     button.addEventListener('click', () => {
       const willOpen = !dropdown.classList.contains('is-open');
-
       dropdowns.forEach((item) => {
         item.classList.remove('is-open');
         const itemButton = item.querySelector('button');
         if (itemButton) itemButton.setAttribute('aria-expanded', 'false');
       });
-
       dropdown.classList.toggle('is-open', willOpen);
       button.setAttribute('aria-expanded', String(willOpen));
     });
@@ -139,21 +194,16 @@
 
   const revealItems = document.querySelectorAll('.reveal');
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
   if (prefersReducedMotion || !('IntersectionObserver' in window)) {
     revealItems.forEach((item) => item.classList.add('is-visible'));
   } else {
-    const observer = new IntersectionObserver(
-      (entries, instance) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add('is-visible');
-          instance.unobserve(entry.target);
-        });
-      },
-      { rootMargin: '0px 0px -8% 0px', threshold: 0.08 }
-    );
-
+    const observer = new IntersectionObserver((entries, instance) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        instance.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
     revealItems.forEach((item) => observer.observe(item));
   }
 })();
