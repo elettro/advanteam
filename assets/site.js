@@ -96,6 +96,46 @@
       line-height: 1.55;
     }
 
+    .capability-card .card-number.adv-icon {
+      display: inline-grid !important;
+      width: 74px !important;
+      height: 74px !important;
+      margin-bottom: 28px !important;
+      border: 1px solid rgba(47,127,104,.2);
+      border-radius: 20px !important;
+      background: linear-gradient(145deg, #f7fbfa, #e4f1ed) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 10px 24px rgba(7,21,37,.07);
+      place-items: center;
+      font-size: 0 !important;
+      color: #176a56;
+    }
+    .capability-card .card-number.adv-icon::before {
+      display: none !important;
+      content: none !important;
+    }
+    .capability-card .card-number.adv-icon svg {
+      width: 38px;
+      height: 38px;
+      overflow: visible;
+    }
+    .capability-card .card-number.adv-icon .icon-soft {
+      fill: rgba(47,127,104,.14);
+      stroke: none;
+    }
+    .capability-card .card-number.adv-icon .icon-line {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.75;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .capability-card:hover .card-number.adv-icon {
+      color: #0f5948;
+      border-color: rgba(47,127,104,.38);
+      transform: translateY(-2px) rotate(-1deg);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 14px 30px rgba(7,21,37,.11);
+    }
+
     @media (max-width: 1180px) {
       .hero-grid {
         grid-template-columns: minmax(0, 1.35fr) minmax(300px, .75fr);
@@ -170,6 +210,22 @@
       if (paragraph) copy.appendChild(paragraph);
       card.appendChild(copy);
     }
+  });
+
+  const capabilityIcons = [
+    `<svg viewBox="0 0 48 48" aria-hidden="true"><circle class="icon-soft" cx="24" cy="24" r="17"/><path class="icon-line" d="M24 8.5a15.5 15.5 0 1 0 15.5 15.5A15.5 15.5 0 0 0 24 8.5Z"/><path class="icon-line" d="m29.5 18.5-3.2 7.8-7.8 3.2 3.2-7.8 7.8-3.2Z"/><circle class="icon-line" cx="24" cy="24" r="2.2"/></svg>`,
+    `<svg viewBox="0 0 48 48" aria-hidden="true"><path class="icon-soft" d="M8 22.5 17 14l7 4.5 7-4.5 9 8.5-12.5 12a5 5 0 0 1-7 0Z"/><path class="icon-line" d="m8 22.5 8.5-8 7.5 4.8 7.5-4.8 8.5 8"/><path class="icon-line" d="m16.5 14.5-4-4-6 6 5 5"/><path class="icon-line" d="m31.5 14.5 4-4 6 6-5 5"/><path class="icon-line" d="m19 28 4 4a3.2 3.2 0 0 0 4.5 0l5.5-5.5"/><path class="icon-line" d="m16 25 4.5 4.5"/></svg>`,
+    `<svg viewBox="0 0 48 48" aria-hidden="true"><path class="icon-soft" d="M9 19h30v20H9z"/><path class="icon-line" d="M7 19h34M11 19v20m8-20v20m10-20v20m8-20v20M7 39h34M24 8l16 8H8l16-8Z"/><path class="icon-line" d="M34 10.5v-4M34 6.5h5"/></svg>`,
+    `<svg viewBox="0 0 48 48" aria-hidden="true"><path class="icon-soft" d="M9 35h30v5H9z"/><path class="icon-line" d="M9 39V11m0 28h30"/><path class="icon-line" d="m13 31 8-8 6 5 11-13"/><path class="icon-line" d="M31 15h7v7"/><circle class="icon-line" cx="21" cy="23" r="2.2"/><circle class="icon-line" cx="27" cy="28" r="2.2"/></svg>`,
+    `<svg viewBox="0 0 48 48" aria-hidden="true"><circle class="icon-soft" cx="24" cy="24" r="17"/><circle class="icon-line" cx="24" cy="24" r="16"/><path class="icon-line" d="M8 24h32M24 8c5 5 7 10.3 7 16s-2 11-7 16M24 8c-5 5-7 10.3-7 16s2 11 7 16"/><circle class="icon-line" cx="12" cy="17" r="2.2"/><circle class="icon-line" cx="35" cy="29" r="2.2"/><path class="icon-line" d="m14 18.5 7 3.5m7 2 5 3"/></svg>`,
+    `<svg viewBox="0 0 48 48" aria-hidden="true"><path class="icon-soft" d="m24 7 14 6v10c0 8.5-5.5 14.5-14 18-8.5-3.5-14-9.5-14-18V13Z"/><path class="icon-line" d="m24 7 14 6v10c0 8.5-5.5 14.5-14 18-8.5-3.5-14-9.5-14-18V13Z"/><path class="icon-line" d="m17.5 24 4.2 4.2 9-9"/><circle class="icon-line" cx="24" cy="24" r="10"/></svg>`
+  ];
+
+  document.querySelectorAll('#capabilities .capability-card').forEach((card, index) => {
+    const iconHolder = card.querySelector('.card-number');
+    if (!iconHolder || !capabilityIcons[index]) return;
+    iconHolder.classList.add('adv-icon');
+    iconHolder.innerHTML = capabilityIcons[index];
   });
 
   const menuButton = document.querySelector('[data-menu-button]');
