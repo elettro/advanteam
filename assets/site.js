@@ -96,6 +96,102 @@
       line-height: 1.55;
     }
 
+    .markets.has-equation-after {
+      padding-bottom: clamp(34px, 4vw, 54px);
+    }
+    .home-equation-section {
+      padding: clamp(22px, 3vw, 34px) 0;
+      background: #dfe5e2;
+    }
+    .home-equation-card {
+      position: relative;
+      width: min(1440px, calc(100% - 32px));
+      margin: 0 auto;
+      overflow: hidden;
+      color: #fff;
+      background: #0d1c2a;
+      border-radius: 28px;
+      box-shadow: 0 18px 55px rgba(7,21,37,.10);
+    }
+    .home-equation-label {
+      position: absolute;
+      z-index: 2;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 11px;
+      color: #071525;
+      background: rgba(255,255,255,.92);
+      border-radius: 999px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.08);
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .home-equation-label b {
+      display: grid;
+      width: 25px;
+      height: 25px;
+      color: #fff;
+      background: #071525;
+      border-radius: 50%;
+      place-items: center;
+    }
+    .home-equation-stage {
+      display: grid;
+      min-height: 650px;
+      padding: 92px 6vw 70px;
+      align-content: center;
+    }
+    .home-equation-eyebrow {
+      margin: 0 0 24px;
+      color: #8cc6b6;
+      font-size: .76rem;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    .home-equation-formula {
+      max-width: 1300px;
+      margin: 0;
+      font-size: clamp(2.2rem, 5.4vw, 6.2rem);
+      font-weight: 800;
+      letter-spacing: -.055em;
+      line-height: 1.02;
+    }
+    .home-equation-formula .operator {
+      color: #8cc6b6;
+      font-weight: 300;
+    }
+    .home-equation-formula .result {
+      display: inline-block;
+      color: #fff;
+      border-bottom: 6px solid #2f7f68;
+    }
+    .home-equation-notes {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 65px;
+    }
+    .home-equation-notes > div {
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,.18);
+    }
+    .home-equation-notes b {
+      display: block;
+      margin-bottom: 7px;
+      color: #8cc6b6;
+    }
+    .home-equation-notes span {
+      color: rgba(255,255,255,.62);
+      font-size: .88rem;
+      line-height: 1.45;
+    }
+
     .capability-card .card-number.adv-icon {
       display: inline-grid !important;
       width: 74px !important;
@@ -161,6 +257,14 @@
       .hero-copy h1 {
         font-size: clamp(3.25rem, 10vw, 5.8rem);
       }
+      .home-equation-stage {
+        min-height: 0;
+        padding: 90px 6vw 58px;
+      }
+      .home-equation-notes {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 50px;
+      }
     }
     @media (max-width: 680px) {
       .hero {
@@ -179,6 +283,25 @@
       }
       .market-card-copy h3 {
         font-size: clamp(1.8rem, 9vw, 2.4rem);
+      }
+      .home-equation-card {
+        width: calc(100% - 24px);
+        border-radius: 20px;
+      }
+      .home-equation-stage {
+        padding: 82px 24px 40px;
+      }
+      .home-equation-formula {
+        font-size: clamp(2.15rem, 11vw, 3.55rem);
+        line-height: 1.04;
+      }
+      .home-equation-formula .result {
+        border-bottom-width: 4px;
+      }
+      .home-equation-notes {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        margin-top: 38px;
       }
     }
   `;
@@ -211,6 +334,35 @@
       card.appendChild(copy);
     }
   });
+
+  const marketsSection = document.querySelector('main > .markets');
+  const contactSection = document.querySelector('main > .contact-section');
+  if (marketsSection && contactSection && !document.querySelector('.home-equation-section')) {
+    marketsSection.classList.add('has-equation-after');
+    const equationSection = document.createElement('section');
+    equationSection.className = 'home-equation-section';
+    equationSection.setAttribute('aria-labelledby', 'home-equation-title');
+    equationSection.innerHTML = `
+      <div class="home-equation-card reveal">
+        <div class="home-equation-label"><b>05</b><span>The Equation</span></div>
+        <div class="home-equation-stage">
+          <p class="home-equation-eyebrow">What ADVANTEAM combines</p>
+          <h2 class="home-equation-formula" id="home-equation-title">
+            Strategy <span class="operator">+</span> Marketing <span class="operator">+</span><br>
+            Digitalization <span class="operator">+</span><br>
+            Commercial Expertise <span class="operator">=</span><br>
+            <span class="result">Realization &amp; Growth</span>
+          </h2>
+          <div class="home-equation-notes">
+            <div><b>Individual</b><span>Every collaboration is built around your organization and objectives.</span></div>
+            <div><b>Integrated</b><span>Strategic, marketing, digital, and commercial thinking stay connected.</span></div>
+            <div><b>Hands-on</b><span>Support continues from planning into actual project realization.</span></div>
+            <div><b>Long-term</b><span>The relationship extends beyond launch into optimization and growth.</span></div>
+          </div>
+        </div>
+      </div>`;
+    contactSection.before(equationSection);
+  }
 
   const capabilityIcons = [
     `<svg viewBox="0 0 48 48" aria-hidden="true"><circle class="icon-soft" cx="24" cy="24" r="17"/><path class="icon-line" d="M24 8.5a15.5 15.5 0 1 0 15.5 15.5A15.5 15.5 0 0 0 24 8.5Z"/><path class="icon-line" d="m29.5 18.5-3.2 7.8-7.8 3.2 3.2-7.8 7.8-3.2Z"/><circle class="icon-line" cx="24" cy="24" r="2.2"/></svg>`,
