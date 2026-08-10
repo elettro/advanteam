@@ -56,6 +56,11 @@
       overflow: hidden;
       background: #0b1b28;
       border-bottom: 1px solid rgba(140,198,182,.4);
+      cursor: pointer;
+    }
+    .market-card-image:focus-visible {
+      outline: 3px solid #8cc6b6;
+      outline-offset: -3px;
     }
     .market-card-image img,
     .market-card-image video {
@@ -65,6 +70,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      pointer-events: none;
     }
     .market-card-image img {
       z-index: 1;
@@ -342,7 +348,9 @@
     const media = marketMedia[index];
     if (media) {
       image.innerHTML = '';
-      image.setAttribute('aria-label', media.alt);
+      image.setAttribute('aria-label', `${media.alt}. Click to replay the video.`);
+      image.setAttribute('role', 'button');
+      image.setAttribute('tabindex', '0');
 
       const fallback = document.createElement('img');
       fallback.src = media.poster;
@@ -351,33 +359,52 @@
       fallback.decoding = 'async';
       image.appendChild(fallback);
 
-      if (!preferPosterOnly) {
-        const video = document.createElement('video');
-        video.muted = true;
-        video.defaultMuted = true;
-        video.autoplay = true;
-        video.loop = true;
-        video.playsInline = true;
-        video.preload = 'metadata';
-        video.poster = media.poster;
-        video.setAttribute('muted', '');
-        video.setAttribute('autoplay', '');
-        video.setAttribute('loop', '');
-        video.setAttribute('playsinline', '');
-        video.setAttribute('aria-hidden', 'true');
-        video.src = media.video;
-        video.addEventListener('playing', () => video.classList.add('is-playing'));
-        video.addEventListener('error', () => video.classList.remove('is-playing'));
-        image.appendChild(video);
+      const video = document.createElement('video');
+      video.muted = true;
+      video.defaultMuted = true;
+      video.autoplay = !preferPosterOnly;
+      video.loop = false;
+      video.playsInline = true;
+      video.preload = preferPosterOnly ? 'none' : 'metadata';
+      video.poster = media.poster;
+      video.setAttribute('muted', '');
+      video.setAttribute('playsinline', '');
+      video.setAttribute('aria-hidden', 'true');
+      video.src = media.video;
+      image.appendChild(video);
 
-        const tryPlay = () => {
-          const playPromise = video.play();
-          if (playPromise && typeof playPromise.catch === 'function') {
-            playPromise.catch(() => video.classList.remove('is-playing'));
-          }
-        };
-        video.addEventListener('canplay', tryPlay, { once: true });
-        requestAnimationFrame(tryPlay);
+      const showPoster = () => {
+        video.pause();
+        video.classList.remove('is-playing');
+        try { video.currentTime = 0; } catch (error) {}
+      };
+
+      const playOnce = () => {
+        try { video.currentTime = 0; } catch (error) {}
+        video.classList.add('is-playing');
+        const playPromise = video.play();
+        if (playPromise && typeof playPromise.catch === 'function') {
+          playPromise.catch(() => video.classList.remove('is-playing'));
+        }
+      };
+
+      video.addEventListener('playing', () => video.classList.add('is-playing'));
+      video.addEventListener('ended', showPoster);
+      video.addEventListener('error', () => video.classList.remove('is-playing'));
+
+      const replayFromFlag = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        playOnce();
+      };
+      image.addEventListener('click', replayFromFlag);
+      image.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') replayFromFlag(event);
+      });
+
+      if (!preferPosterOnly) {
+        video.addEventListener('canplay', playOnce, { once: true });
+        requestAnimationFrame(playOnce);
       }
     }
 
