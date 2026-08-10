@@ -1,4 +1,51 @@
 (() => {
+  /* Mobile navigation must live outside the sticky/backdrop-filter header.
+     Keeping a fixed menu inside that header causes iOS/Safari to constrain
+     the menu to the header instead of the viewport. Moving the same node
+     preserves the event listeners already attached by site.js. */
+  const mobileNav = document.querySelector('[data-mobile-nav]');
+  const menuButton = document.querySelector('[data-menu-button]');
+  const siteHeader = document.querySelector('[data-header]');
+
+  if (mobileNav && siteHeader && mobileNav.parentElement === siteHeader) {
+    document.body.appendChild(mobileNav);
+  }
+
+  /* Fallback wiring in case site.js fails before attaching the menu handler. */
+  if (menuButton && mobileNav && !menuButton.hasAttribute('aria-controls')) {
+    mobileNav.id = mobileNav.id || 'advanteam-mobile-navigation';
+    menuButton.setAttribute('type', 'button');
+    menuButton.setAttribute('aria-controls', mobileNav.id);
+    menuButton.setAttribute('aria-expanded', 'false');
+    menuButton.setAttribute('aria-label', 'Open navigation');
+    mobileNav.setAttribute('aria-hidden', 'true');
+
+    const closeMenu = () => {
+      menuButton.setAttribute('aria-expanded', 'false');
+      menuButton.setAttribute('aria-label', 'Open navigation');
+      mobileNav.classList.remove('is-open');
+      mobileNav.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('menu-open');
+    };
+
+    menuButton.addEventListener('click', () => {
+      const opening = menuButton.getAttribute('aria-expanded') !== 'true';
+      menuButton.setAttribute('aria-expanded', String(opening));
+      menuButton.setAttribute('aria-label', opening ? 'Close navigation' : 'Open navigation');
+      mobileNav.classList.toggle('is-open', opening);
+      mobileNav.setAttribute('aria-hidden', String(!opening));
+      document.body.classList.toggle('menu-open', opening);
+    });
+
+    mobileNav.addEventListener('click', (event) => {
+      if (event.target.closest('a')) closeMenu();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeMenu();
+    });
+  }
+
   const styleId = 'advanteam-legal-footer-styles';
   if (!document.getElementById(styleId)) {
     const style = document.createElement('style');
@@ -47,6 +94,13 @@
       .legal-footer-links a:hover,
       .legal-footer-links a:focus-visible {
         color: #fff;
+      }
+      @media (max-width: 1080px) {
+        .mobile-nav {
+          height: calc(100dvh - var(--header-height));
+          max-height: calc(100dvh - var(--header-height));
+          touch-action: pan-y;
+        }
       }
       @media (max-width: 760px) {
         .legal-footer-inner {
