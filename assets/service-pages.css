@@ -28,3 +28,29 @@
 @media(max-width:1100px){.communications-page .service-hero-grid{grid-template-columns:minmax(0,1.55fr) minmax(220px,.45fr);gap:32px}.communications-page .service-hero h1{font-size:clamp(3.25rem,6.8vw,5.7rem)}}
 @media(max-width:980px){.service-hero-grid,.split-layout{grid-template-columns:1fr}.service-hero-grid .fpo-image{min-height:360px}.capability-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.communications-page .service-hero-grid{grid-template-columns:1fr}.communications-page .service-hero h1{white-space:normal}.communications-page .service-hero-grid>.fpo-image{width:min(72vw,320px);min-height:0;justify-self:center}}
 @media(max-width:680px){.service-hero{padding:66px 0 78px}.service-hero h1{font-size:clamp(2.85rem,15vw,4.6rem)}.fpo-image{min-height:310px;padding:24px}.capability-grid,.related-pillars{grid-template-columns:1fr}.related-card{min-height:0}.communications-page .service-hero h1{font-size:clamp(2.65rem,12.5vw,4.25rem)}.communications-page .service-hero-grid>.fpo-image{width:min(78vw,300px)}}
+
+/* Mobile refinement */
+@media(max-width:980px){
+  .service-hero{padding:58px 0 66px}
+  .service-hero-grid,.split-layout{gap:30px}
+  .service-hero-grid .fpo-image{min-height:0;width:min(100%,620px);justify-self:center}
+  .capability-grid{gap:16px}
+}
+@media(max-width:720px){
+  .service-hero{padding:44px 0 52px}
+  .service-hero h1{font-size:clamp(2.35rem,11vw,3.55rem);line-height:1.01}
+  .communications-page .service-hero h1{font-size:clamp(2.25rem,10.5vw,3.4rem);white-space:normal}
+  .breadcrumbs{gap:6px;margin-bottom:16px;font-size:.76rem;line-height:1.35}
+  .capability-grid,.related-pillars{grid-template-columns:1fr;gap:14px}
+  .capability-card,.related-card{min-height:0;padding:22px;border-radius:16px}
+  #capabilities .capability-card p{max-width:none}
+  #capabilities .capability-card .card-number{margin-bottom:20px}
+  .outcome-panel{padding:24px;border-radius:16px}
+  .outcome-panel h2{font-size:clamp(1.85rem,8vw,2.55rem)}
+  .fpo-image{min-height:240px;padding:20px;border-radius:16px}
+  .communications-page .service-hero-grid>.fpo-image{width:min(82vw,285px)}
+  .page-cta{text-align:left}
+  .page-cta .section-lead{margin-inline:0}
+  .page-cta .button-row{justify-content:stretch}
+}
+@media(hover:none){#capabilities .capability-card:hover{transform:none;box-shadow:none}}
