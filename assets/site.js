@@ -46,33 +46,36 @@
       display: none;
     }
     .market-card-image {
-      display: grid;
+      position: relative;
+      display: block;
       width: 100%;
-      min-height: 220px;
+      min-height: 0;
+      aspect-ratio: 16 / 9;
       margin: 0;
-      padding: 24px;
-      place-items: center;
-      color: rgba(255,255,255,.72);
-      background:
-        linear-gradient(135deg, rgba(47,127,104,.24), rgba(255,255,255,.035)),
-        repeating-linear-gradient(45deg, transparent 0 18px, rgba(255,255,255,.045) 18px 19px);
-      border-bottom: 1px dashed rgba(140,198,182,.55);
-      text-align: center;
+      padding: 0;
+      overflow: hidden;
+      background: #0b1b28;
+      border-bottom: 1px solid rgba(140,198,182,.4);
     }
-    .market-card-image strong {
+    .market-card-image img,
+    .market-card-image video {
+      position: absolute;
+      inset: 0;
       display: block;
-      margin-bottom: 6px;
-      color: #8cc6b6;
-      font-size: .75rem;
-      letter-spacing: .13em;
-      text-transform: uppercase;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
-    .market-card-image span {
-      display: block;
-      max-width: 270px;
-      color: rgba(255,255,255,.66);
-      font-size: .82rem;
-      line-height: 1.4;
+    .market-card-image img {
+      z-index: 1;
+    }
+    .market-card-image video {
+      z-index: 2;
+      opacity: 0;
+      transition: opacity .3s ease;
+    }
+    .market-card-image video.is-playing {
+      opacity: 1;
     }
     .market-card-copy {
       display: flex;
@@ -275,9 +278,6 @@
         font-size: clamp(2.75rem, 13vw, 4.45rem);
         line-height: 1.01;
       }
-      .market-card-image {
-        min-height: 190px;
-      }
       .market-card-copy {
         padding: 22px 24px 28px;
       }
@@ -307,21 +307,78 @@
   `;
   document.head.appendChild(layoutStyles);
 
-  const marketImageRecommendations = [
-    'Germany and Europe business environment',
-    'North American executive market-entry scene',
-    'Modern Middle Eastern business setting'
+  const marketMedia = [
+    {
+      video: '/advanteam/flags/16x9_EU_FLAG_and_Germany_Flag.mp4',
+      poster: '/advanteam/flags/EU_FLAG_and_Germany_Flag-16x9.png',
+      alt: 'European Union and Germany flags'
+    },
+    {
+      video: '/advanteam/flags/16x9_American_Flag_and_Canada.mp4',
+      poster: '/advanteam/flags/Dean_Palermo_Sharp_Professianl_use_of_American_Flag_and_Canad_a76921f8-a488-4a15-9ff3-ca92eff22103_0.png',
+      alt: 'United States and Canada flags'
+    },
+    {
+      video: '/advanteam/flags/Dean_Palermo_Dubai_Flag_not_wavy_not_wrinkled_with_key_buildi_680d73e4-26a2-4d6d-9898-3dd67e65e9e4_0.mp4',
+      poster: '/advanteam/flags/Dubai_Flag.png',
+      alt: 'United Arab Emirates flag in Dubai'
+    }
   ];
+
+  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  const effectiveType = connection && connection.effectiveType ? String(connection.effectiveType).toLowerCase() : '';
+  const preferPosterOnly = Boolean(connection && connection.saveData) || effectiveType === 'slow-2g' || effectiveType === '2g';
 
   document.querySelectorAll('.market-card').forEach((card, index) => {
     card.querySelectorAll(':scope > span').forEach((number) => number.remove());
 
-    if (!card.querySelector('.market-card-image')) {
-      const image = document.createElement('div');
+    let image = card.querySelector('.market-card-image');
+    if (!image) {
+      image = document.createElement('div');
       image.className = 'market-card-image';
-      image.setAttribute('aria-label', 'FPO image recommendation');
-      image.innerHTML = `<div><strong>FPO image</strong><span>${marketImageRecommendations[index] || 'Regional market image to be added.'}</span></div>`;
       card.prepend(image);
+    }
+
+    const media = marketMedia[index];
+    if (media) {
+      image.innerHTML = '';
+      image.setAttribute('aria-label', media.alt);
+
+      const fallback = document.createElement('img');
+      fallback.src = media.poster;
+      fallback.alt = '';
+      fallback.loading = 'lazy';
+      fallback.decoding = 'async';
+      image.appendChild(fallback);
+
+      if (!preferPosterOnly) {
+        const video = document.createElement('video');
+        video.muted = true;
+        video.defaultMuted = true;
+        video.autoplay = true;
+        video.loop = true;
+        video.playsInline = true;
+        video.preload = 'metadata';
+        video.poster = media.poster;
+        video.setAttribute('muted', '');
+        video.setAttribute('autoplay', '');
+        video.setAttribute('loop', '');
+        video.setAttribute('playsinline', '');
+        video.setAttribute('aria-hidden', 'true');
+        video.src = media.video;
+        video.addEventListener('playing', () => video.classList.add('is-playing'));
+        video.addEventListener('error', () => video.classList.remove('is-playing'));
+        image.appendChild(video);
+
+        const tryPlay = () => {
+          const playPromise = video.play();
+          if (playPromise && typeof playPromise.catch === 'function') {
+            playPromise.catch(() => video.classList.remove('is-playing'));
+          }
+        };
+        video.addEventListener('canplay', tryPlay, { once: true });
+        requestAnimationFrame(tryPlay);
+      }
     }
 
     if (!card.querySelector('.market-card-copy')) {
