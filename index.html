@@ -11,10 +11,10 @@
 <meta name="theme-color" content="#071525">
 <style>
 .hero-video-card{position:relative;width:min(100%,368px);aspect-ratio:3/4;justify-self:end;overflow:hidden;border:1px solid rgba(255,255,255,.2);border-radius:24px;background:#10263a;box-shadow:0 26px 70px rgba(0,0,0,.3);isolation:isolate;transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease}.hero-video-card:hover,.hero-video-card:focus-within{transform:translateY(-7px) scale(1.012);border-color:rgba(140,198,182,.58);box-shadow:0 34px 86px rgba(0,0,0,.4)}.hero-video-card:before{position:absolute;z-index:2;inset:0;content:"";background:linear-gradient(180deg,rgba(7,21,37,.03) 30%,rgba(7,21,37,.7) 100%);pointer-events:none;transition:opacity .25s ease}.hero-video-card.is-playing:before{opacity:0}.hero-video-card video{display:block;width:100%;height:100%;object-fit:cover;background:#10263a;transform:scale(1.001);transition:transform .45s ease,filter .35s ease}.hero-video-card:hover video{transform:scale(1.025)}.hero-video-card.is-playing:hover video{transform:scale(1.01)}.hero-video-activate{position:absolute;z-index:3;inset:0;display:flex;align-items:flex-end;width:100%;padding:28px;color:#fff;background:transparent;border:0;text-align:left;cursor:pointer}.hero-video-activate-inner{display:flex;align-items:center;gap:15px}.hero-video-play{display:grid;width:58px;height:58px;flex:0 0 auto;border:1px solid rgba(255,255,255,.7);border-radius:50%;background:rgba(7,21,37,.58);backdrop-filter:blur(10px);place-items:center;transition:transform .2s ease,background .2s ease}.hero-video-card:hover .hero-video-play{transform:scale(1.08);background:rgba(47,127,104,.88)}.hero-video-play:before{width:0;height:0;margin-left:4px;content:"";border-top:8px solid transparent;border-bottom:8px solid transparent;border-left:13px solid #fff}.hero-video-label strong{display:block;margin-bottom:3px;font-size:1rem;line-height:1.2}.hero-video-label span{display:block;color:rgba(255,255,255,.76);font-size:.78rem;line-height:1.35}.hero-video-card.is-playing .hero-video-activate{display:none}.hero-video-card.is-loading .hero-video-label span{color:#fff}.hero-video-card.has-error .hero-video-label span{color:#ffd6d6}.hero-video-card video::-webkit-media-controls-panel{background-image:linear-gradient(transparent,rgba(7,21,37,.75))}.home-equation-label{display:none!important}
-.parallax-divider{position:relative;height:clamp(330px,28vw,430px);overflow:hidden;background:#071525;isolation:isolate}.parallax-divider-media{position:absolute;inset:-24% 0;background-repeat:no-repeat;background-position:center;background-size:cover;transform:translate3d(0,var(--parallax-y,0px),0) scale(1.035);will-change:transform}.parallax-divider:after{position:absolute;inset:0;content:"";background:linear-gradient(180deg,rgba(7,21,37,.05),rgba(7,21,37,.12));pointer-events:none}.parallax-germany .parallax-divider-media{background-image:url('/advanteam/images/backgrounds/21x9_httpss.mj.runqyV2VGTdeOI_EU__Germany.png')}.parallax-dubai .parallax-divider-media{background-image:url('/advanteam/images/backgrounds/21x9_EU__Dubai_doing_business_together_--chaos_50.png');background-position:center 45%}
-@media(max-width:980px){.hero-video-card{width:min(72vw,340px);justify-self:center}.hero-grid{align-items:center}.parallax-divider{height:310px}.parallax-divider-media{inset:-18% 0;transform:none;background-position:center}}
+.parallax-divider{position:relative;height:clamp(390px,34vw,560px);overflow:hidden;background:#071525;isolation:isolate}.parallax-divider-media{position:absolute;left:0;top:50%;width:100%;height:150%;background-repeat:no-repeat;background-position:center;background-size:cover;transform:translate3d(0,calc(-50% + var(--parallax-y,0px)),0) scale(1.08);will-change:transform}.parallax-divider:before,.parallax-divider:after{position:absolute;z-index:2;left:0;width:100%;height:90px;content:"";pointer-events:none}.parallax-divider:before{top:0;background:linear-gradient(to bottom,rgba(7,21,37,.24),transparent)}.parallax-divider:after{bottom:0;background:linear-gradient(to top,rgba(7,21,37,.28),transparent)}.parallax-germany .parallax-divider-media{background-image:url('/advanteam/images/backgrounds/21x9_httpss.mj.runqyV2VGTdeOI_EU__Germany.png');background-position:center 48%}.parallax-dubai .parallax-divider-media{background-image:url('/advanteam/images/backgrounds/21x9_EU__Dubai_doing_business_together_--chaos_50.png');background-position:center 48%}
+@media(max-width:980px){.hero-video-card{width:min(72vw,340px);justify-self:center}.hero-grid{align-items:center}.parallax-divider{height:320px}.parallax-divider-media{height:125%;transform:translate3d(0,-50%,0) scale(1.04)}}
 @media(max-width:680px){.hero-video-card{width:min(82vw,315px);border-radius:20px}.hero-video-activate{padding:22px}.hero-video-play{width:52px;height:52px}.parallax-divider{height:240px}}
-@media(prefers-reduced-motion:reduce){.hero-video-card,.hero-video-card video,.hero-video-play{transition:none}.hero-video-card:hover,.hero-video-card:focus-within{transform:none}.hero-video-card:hover video{transform:none}.parallax-divider-media{transform:none!important}}
+@media(prefers-reduced-motion:reduce){.hero-video-card,.hero-video-card video,.hero-video-play{transition:none}.hero-video-card:hover,.hero-video-card:focus-within{transform:none}.hero-video-card:hover video{transform:none}.parallax-divider-media{transform:translate3d(0,-50%,0) scale(1.04)!important}}
 </style>
 </head>
 <body>
@@ -51,27 +51,16 @@
   const activate = document.querySelector('[data-hero-video-activate]');
   const status = document.querySelector('[data-hero-video-status]');
   if (!card || !video || !activate) return;
-
   const thumbTime = 1.2;
   let thumbReady = false;
-
   const showThumbnail = () => {
     if (!Number.isFinite(video.duration) || video.duration <= 0) return;
     const seekTo = Math.min(thumbTime, Math.max(.15, video.duration - .2));
     try { video.currentTime = seekTo; } catch (error) {}
   };
-
   video.addEventListener('loadedmetadata', showThumbnail, { once: true });
-  video.addEventListener('seeked', () => {
-    if (!card.classList.contains('is-playing') && !thumbReady) {
-      video.pause();
-      thumbReady = true;
-    }
-  });
-  video.addEventListener('loadeddata', () => {
-    if (!thumbReady && !card.classList.contains('is-playing')) showThumbnail();
-  });
-
+  video.addEventListener('seeked', () => { if (!card.classList.contains('is-playing') && !thumbReady) { video.pause(); thumbReady = true; } });
+  video.addEventListener('loadeddata', () => { if (!thumbReady && !card.classList.contains('is-playing')) showThumbnail(); });
   const resetCard = () => {
     card.classList.remove('is-playing', 'is-loading', 'has-error');
     activate.disabled = false;
@@ -81,7 +70,6 @@
     thumbReady = false;
     showThumbnail();
   };
-
   const activateVideo = async () => {
     card.classList.remove('has-error');
     card.classList.add('is-loading');
@@ -89,7 +77,6 @@
     if (status) status.textContent = 'Loading video…';
     video.controls = true;
     video.muted = false;
-
     try {
       video.currentTime = 0;
       await video.play();
@@ -102,66 +89,56 @@
       video.controls = false;
       video.muted = true;
       if (status) status.textContent = 'Video did not start. Click to retry.';
-      console.error('ADVANTEAM hero video failed to play:', error);
     }
   };
-
   activate.addEventListener('click', activateVideo);
-  video.addEventListener('play', () => {
-    card.classList.remove('is-loading', 'has-error');
-    card.classList.add('is-playing');
-  });
+  video.addEventListener('play', () => { card.classList.remove('is-loading', 'has-error'); card.classList.add('is-playing'); });
   video.addEventListener('ended', resetCard);
-  video.addEventListener('error', () => {
-    card.classList.remove('is-loading', 'is-playing');
-    card.classList.add('has-error');
-    activate.disabled = false;
-    if (status) status.textContent = 'Video did not load. Click to retry.';
-  });
-
+  video.addEventListener('error', () => { card.classList.remove('is-loading', 'is-playing'); card.classList.add('has-error'); activate.disabled = false; if (status) status.textContent = 'Video did not load. Click to retry.'; });
   if (video.readyState >= 1) showThumbnail();
 })();
 
 (() => {
-  const dividers = [...document.querySelectorAll('[data-parallax-divider]')];
+  const dividers = Array.from(document.querySelectorAll('[data-parallax-divider]'));
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const desktopMotion = window.matchMedia('(min-width: 981px)');
+  const desktop = window.matchMedia('(min-width: 981px)');
   if (!dividers.length) return;
 
   let ticking = false;
   const updateParallax = () => {
     ticking = false;
-    if (reduceMotion.matches || !desktopMotion.matches) {
-      dividers.forEach((divider) => {
+    if (reduceMotion.matches || !desktop.matches) {
+      dividers.forEach(divider => {
         const media = divider.querySelector('[data-parallax-media]');
         if (media) media.style.setProperty('--parallax-y', '0px');
       });
       return;
     }
-
-    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-    dividers.forEach((divider) => {
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    dividers.forEach((divider, index) => {
       const media = divider.querySelector('[data-parallax-media]');
       if (!media) return;
       const rect = divider.getBoundingClientRect();
-      if (rect.bottom < -100 || rect.top > viewportHeight + 100) return;
-      const progress = Math.max(0, Math.min(1, (viewportHeight - rect.top) / (viewportHeight + rect.height)));
-      const offset = (progress - .5) * 120;
-      media.style.setProperty('--parallax-y', `${offset.toFixed(1)}px`);
+      if (rect.bottom < -100 || rect.top > vh + 100) return;
+      const center = rect.top + rect.height / 2;
+      const normalized = (center - vh / 2) / ((vh + rect.height) / 2);
+      const clamped = Math.max(-1, Math.min(1, normalized));
+      const travel = index % 2 === 0 ? -150 : -125;
+      const y = clamped * travel;
+      media.style.setProperty('--parallax-y', `${y.toFixed(1)}px`);
     });
   };
-
-  const requestUpdate = () => {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(updateParallax);
+  const requestTick = () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(updateParallax);
+    }
   };
-
-  window.addEventListener('scroll', requestUpdate, { passive:true });
-  window.addEventListener('resize', requestUpdate);
-  reduceMotion.addEventListener?.('change', requestUpdate);
-  desktopMotion.addEventListener?.('change', requestUpdate);
-  requestUpdate();
+  window.addEventListener('scroll', requestTick, { passive: true });
+  window.addEventListener('resize', requestTick);
+  reduceMotion.addEventListener?.('change', requestTick);
+  desktop.addEventListener?.('change', requestTick);
+  updateParallax();
 })();
 </script>
 <script src="/advanteam/assets/site.js" defer></script>
