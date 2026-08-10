@@ -225,6 +225,18 @@ p:last-child {
   letter-spacing: 0.11em;
 }
 
+.site-header .brand {
+  width: 230px;
+  height: 54px;
+  gap: 0;
+  background: url('/advanteam/logo/ADVANTEAM_logo_transparent_4000px.png') left center / contain no-repeat;
+}
+
+.site-header .brand-mark,
+.site-header .brand-name {
+  display: none;
+}
+
 .desktop-nav {
   display: flex;
   align-items: center;
@@ -1001,6 +1013,11 @@ p:last-child {
 @media (max-width: 900px) {
   :root {
     --header-height: 74px;
+  }
+
+  .site-header .brand {
+    width: 190px;
+    height: 46px;
   }
 
   .desktop-nav {
