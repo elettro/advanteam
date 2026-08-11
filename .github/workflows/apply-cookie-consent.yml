@@ -3,8 +3,8 @@ name: Apply cookie consent microsystem
 on:
   push:
     paths:
-      - '.github/workflows/apply-cookie-consent.yml'
-  workflow_dispatch:
+      - .github/workflows/apply-cookie-consent.yml
+  workflow_dispatch: {}
 
 permissions:
   contents: write
@@ -17,28 +17,11 @@ jobs:
         with:
           ref: main
       - name: Load cookie consent globally
+        shell: bash
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          path = Path('assets/site.js')
-          text = path.read_text()
-          marker = "  const cookieConsentScript = document.createElement('script');"
-          if marker not in text:
-              insert = """
-
-  /* Global cookie consent microsystem. */
-  const cookieConsentScript = document.createElement('script');
-  cookieConsentScript.src = '/advanteam/assets/cookie-consent.js';
-  cookieConsentScript.defer = true;
-  document.head.appendChild(cookieConsentScript);
-"""
-              idx = text.rfind('\n})();')
-              if idx == -1:
-                  raise SystemExit('Could not find site.js IIFE closing marker')
-              text = text[:idx] + insert + text[idx:]
-              path.write_text(text)
-          PY
+          python3 -c "from pathlib import Path; p=Path('assets/site.js'); t=p.read_text(); marker=\"  const cookieConsentScript = document.createElement('script');\"; ins=\"\\n\\n  /* Global cookie consent microsystem. */\\n  const cookieConsentScript = document.createElement('script');\\n  cookieConsentScript.src = '/advanteam/assets/cookie-consent.js';\\n  cookieConsentScript.defer = true;\\n  document.head.appendChild(cookieConsentScript);\\n\"; i=t.rfind('\\n})();'); p.write_text(t if marker in t else t[:i]+ins+t[i:])"
       - name: Commit changes
+        shell: bash
         run: |
           if git diff --quiet; then
             echo "No changes needed"
