@@ -314,4 +314,11 @@
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
     revealItems.forEach((item) => observer.observe(item));
   }
+
+  /* Global cookie consent microsystem. */
+  const cookieConsentScript = document.createElement('script');
+  cookieConsentScript.src = '/advanteam/assets/cookie-consent.js';
+  cookieConsentScript.defer = true;
+  document.head.appendChild(cookieConsentScript);
+
 })();
