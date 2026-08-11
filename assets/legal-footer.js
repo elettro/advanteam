@@ -95,6 +95,45 @@
       .legal-footer-links a:focus-visible {
         color: #fff;
       }
+
+      /* Always give the EN / DE control its own high-contrast visual container.
+         This prevents white-on-white loss on light/translucent header states. */
+      .site-header .adv-lang-switch,
+      [data-header] .adv-lang-switch {
+        padding: 4px !important;
+        gap: 3px !important;
+        background: #071525 !important;
+        border: 1px solid rgba(255,255,255,.34) !important;
+        border-radius: 999px !important;
+        box-shadow: 0 3px 12px rgba(0,0,0,.28), 0 0 0 1px rgba(7,21,37,.34) !important;
+      }
+      .site-header .adv-lang-switch button,
+      [data-header] .adv-lang-switch button {
+        min-width: 36px !important;
+        height: 32px !important;
+        color: #fff !important;
+        background: rgba(255,255,255,.11) !important;
+        border: 1px solid rgba(255,255,255,.08) !important;
+        border-radius: 999px !important;
+        font-weight: 900 !important;
+      }
+      .site-header .adv-lang-switch button:hover,
+      [data-header] .adv-lang-switch button:hover {
+        background: rgba(255,255,255,.19) !important;
+      }
+      .site-header .adv-lang-switch button.is-active,
+      [data-header] .adv-lang-switch button.is-active {
+        color: #071525 !important;
+        background: #8cc6b6 !important;
+        border-color: #8cc6b6 !important;
+        box-shadow: 0 1px 5px rgba(0,0,0,.18) !important;
+      }
+      .site-header .adv-lang-switch button:focus-visible,
+      [data-header] .adv-lang-switch button:focus-visible {
+        outline: 3px solid #fff !important;
+        outline-offset: 2px !important;
+      }
+
       @media (max-width: 1080px) {
         .mobile-nav {
           height: calc(100dvh - var(--header-height));
@@ -110,6 +149,17 @@
         }
         .legal-footer-links {
           justify-content: flex-start;
+        }
+      }
+      @media (max-width: 420px) {
+        .site-header .adv-lang-switch,
+        [data-header] .adv-lang-switch {
+          padding: 3px !important;
+        }
+        .site-header .adv-lang-switch button,
+        [data-header] .adv-lang-switch button {
+          min-width: 32px !important;
+          height: 30px !important;
         }
       }
     `;
