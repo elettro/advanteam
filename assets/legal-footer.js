@@ -138,12 +138,26 @@
     if (year) year.textContent = new Date().getFullYear();
   }
 
+  const loadTranslationPatch = () => {
+    if (document.querySelector('script[data-advanteam-i18n-patch]')) return;
+    const patch = document.createElement('script');
+    patch.src = '/advanteam/assets/i18n-patch.js';
+    patch.async = false;
+    patch.dataset.advanteamI18nPatch = 'true';
+    document.body.appendChild(patch);
+  };
+
   /* Text-only English/German switch. Media stays unchanged for this phase. */
-  if (!document.querySelector('script[data-advanteam-i18n]')) {
+  const existingI18n = document.querySelector('script[data-advanteam-i18n]');
+  if (existingI18n) {
+    if (window.requestIdleCallback) requestIdleCallback(loadTranslationPatch);
+    else setTimeout(loadTranslationPatch, 0);
+  } else {
     const i18n = document.createElement('script');
     i18n.src = '/advanteam/assets/i18n.js';
     i18n.async = false;
     i18n.dataset.advanteamI18n = 'true';
+    i18n.addEventListener('load', loadTranslationPatch, { once:true });
     document.body.appendChild(i18n);
   }
 })();
