@@ -117,23 +117,33 @@
   }
 
   const footer = document.querySelector('footer');
-  if (!footer) return;
-  footer.classList.remove('footer');
-  footer.classList.add('site-footer', 'legal-footer');
-  footer.innerHTML = `
-    <div class="wrap legal-footer-inner">
-      <div class="legal-footer-meta">
-        <strong>ADVANTEAM</strong>
-        <span>© <span data-legal-year></span></span>
-        <span>Founded 1998</span>
-      </div>
-      <nav class="legal-footer-links" aria-label="Legal and company links">
-        <a href="/advanteam/">Home</a>
-        <a href="/advanteam/contact/">Contact</a>
-        <a href="/advanteam/legal/imprint/">Imprint</a>
-        <a href="/advanteam/legal/privacy/">Privacy Policy</a>
-      </nav>
-    </div>`;
-  const year = footer.querySelector('[data-legal-year]');
-  if (year) year.textContent = new Date().getFullYear();
+  if (footer) {
+    footer.classList.remove('footer');
+    footer.classList.add('site-footer', 'legal-footer');
+    footer.innerHTML = `
+      <div class="wrap legal-footer-inner">
+        <div class="legal-footer-meta">
+          <strong>ADVANTEAM</strong>
+          <span>© <span data-legal-year></span></span>
+          <span>Founded 1998</span>
+        </div>
+        <nav class="legal-footer-links" aria-label="Legal and company links">
+          <a href="/advanteam/">Home</a>
+          <a href="/advanteam/contact/">Contact</a>
+          <a href="/advanteam/legal/imprint/">Imprint</a>
+          <a href="/advanteam/legal/privacy/">Privacy Policy</a>
+        </nav>
+      </div>`;
+    const year = footer.querySelector('[data-legal-year]');
+    if (year) year.textContent = new Date().getFullYear();
+  }
+
+  /* Text-only English/German switch. Media stays unchanged for this phase. */
+  if (!document.querySelector('script[data-advanteam-i18n]')) {
+    const i18n = document.createElement('script');
+    i18n.src = '/advanteam/assets/i18n.js';
+    i18n.async = false;
+    i18n.dataset.advanteamI18n = 'true';
+    document.body.appendChild(i18n);
+  }
 })();
